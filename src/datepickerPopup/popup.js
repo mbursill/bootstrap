@@ -211,7 +211,16 @@ function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $
   // Inner change
   $scope.dateSelection = function(dt) {
     $scope.date = dt;
-    var date = $scope.date ? dateParser.filter($scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
+	var date = null; // Setting to NULL is necessary for form validators to function
+	
+	if ($scope.date) {
+		if (angular.isString($scope.date)) {
+			date = dateParser.parse($scope.date, dateFormat);
+		} else {
+			date = dateParser.filter($scope.date, dateFormat);
+		}
+	}
+	
     $element.val(date);
     ngModel.$setViewValue(date);
 
